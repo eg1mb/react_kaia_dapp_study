@@ -64,9 +64,9 @@ src/
 
 ### 1. 사전 요구사항
 
-- Node.js 18+ 
+- Node.js 18+
 - yarn 또는 npm
-- [Kaikas 지갑](https://chrome.google.com/webstore/detail/kaikas/jblndlipeogpafnldhgmapagcccfchpi) 설치
+- [Kaia Wallet](https://chromewebstore.google.com/detail/kaia-wallet/jblndlipeogpafnldhgmapagcccfchpi) 설치
 
 ### 2. 설치 및 실행
 
@@ -97,45 +97,54 @@ yarn preview
 ### 주요 컴포넌트
 
 #### 1. 지갑 연결 (`WalletConnect`)
+
 - Kaikas 지갑 감지 및 연결
 - 연결 상태 표시
 
 #### 2. 지갑 정보 (`WalletInfo`)
+
 - 연결된 계정 주소 표시
 - 잔액 실시간 업데이트
 - 네트워크 정보 표시
 
 #### 3. 전송 폼 (`SendForm`)
+
 - 수신 주소 입력
 - 전송 금액 입력
 - 트랜잭션 실행
 
 #### 4. 트랜잭션 목록 (`TransactionList`)
+
 - 전송한 트랜잭션 히스토리
 - 트랜잭션 상태 표시 (대기중/완료)
 
 ### 상태 관리
 
 **Connection Store** (`src/store/connection.ts`)
+
 - 지갑 연결 상태
 - 계정 정보 및 잔액
 - 네트워크 정보
 
 **Transaction Store** (`src/store/transaction.ts`)
+
 - 트랜잭션 히스토리
 - 전송 기능
 
 **Error Store** (`src/store/error.ts`)
+
 - 전역 에러 상태 관리
 
 ### Web3 유틸리티
 
 **지갑 관련**
+
 - `detect_wallet.ts`: 지갑 감지
 - `request_accounts.ts`: 계정 요청
 - `add_network.ts`: 네트워크 추가
 
 **블록체인 상호작용**
+
 - `get_balance.ts`: 잔액 조회
 - `get_network.ts`: 네트워크 정보
 - `send_transaction.ts`: 트랜잭션 전송
@@ -146,7 +155,7 @@ yarn preview
 2. **테스트넷 연결**: 앱에서 자동으로 Kaia 테스트넷 추가
 3. **테스트 토큰**: [Kaia Faucet](https://faucet.kaia.io/)에서 받기
 4. **트랜잭션 테스트**: 다른 주소로 토큰 전송
-5. **확인**: [Kaia 탐색기](https://kairos.kaiascope.com/)에서 트랜잭션 확인
+5. **확인**: [KaiaScan](https://www.kaiascan.io/)에서 트랜잭션 확인
 
 ---
 
@@ -169,14 +178,17 @@ yarn preview
 ## 🔧 트러블슈팅
 
 ### 지갑 연결 문제
+
 - Kaikas 지갑이 설치되어 있는지 확인
 - 페이지 새로고침 후 다시 시도
 
 ### 네트워크 문제
+
 - 앱에서 자동으로 Kaia 테스트넷을 추가하므로 승인만 하면 됨
 - 수동 추가가 필요한 경우 네트워크 설정 확인
 
 ### 트랜잭션 실패
+
 - 충분한 KAIA 잔액이 있는지 확인
 - [Kaia Faucet](https://faucet.kaia.io/)에서 테스트 토큰 받기
 - 가스비 설정 확인
@@ -186,14 +198,16 @@ yarn preview
 ## 📚 참고 자료
 
 ### 공식 문서
+
 - [Kaia 공식 문서](https://docs.kaia.io/)
-- [Kaikas 지갑 가이드](https://docs.kaia.io/build/tools/wallets/kaikas/)
+- [Kaia Wallet 가이드](https://docs.kaia.io/build/tools/wallets/kaia-wallet/)
 - [Web3.js 문서](https://web3js.readthedocs.io/)
 
 ### 도구
+
 - [Kaia Faucet](https://faucet.kaia.io/) - 테스트 토큰
-- [Kaia 탐색기](https://kairos.kaiascope.com/) - 테스트넷
-- [Kaikas 지갑](https://chrome.google.com/webstore/detail/kaikas/jblndlipeogpafnldhgmapagcccfchpi)
+- [KaiaScan](https://www.kaiascan.io/) - 블록체인 탐색기
+- [Kaia Wallet](https://docs.kaiawallet.io/)
 
 ---
 
