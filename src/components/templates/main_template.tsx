@@ -1,54 +1,47 @@
-import WalletConnect from "../organisms/wallet_connect";
+import { useAccount, useBalance, useChainId } from "wagmi";
 import WalletInfo from "../organisms/wallet_info";
 import SendForm from "../organisms/send_form";
 import TransactionList from "../organisms/transaction_list";
-import type { Transaction } from "../../types/transaction";
 
-interface MainTemplateProps {
-  isConnected: boolean;
-  isConnecting: boolean;
-  account: string | null;
-  balance: string | null;
-  network: string | null;
-  transactions: Transaction[];
-  onConnect: () => void;
-  onDisconnect: () => void;
-  onSendTransaction: (to: string, amount: string) => void;
-}
+export default function MainTemplate() {
+  const { address, isConnected } = useAccount();
+  const { data: balance } = useBalance({ address });
+  const chainId = useChainId();
 
-export default function MainTemplate({
-  isConnected,
-  isConnecting,
-  account,
-  balance,
-  network,
-  transactions,
-  onConnect,
-  onDisconnect,
-  onSendTransaction,
-}: MainTemplateProps) {
+  const formatBalance = balance
+    ? `${parseFloat(balance.formatted).toFixed(4)} ${balance.symbol}`
+    : "0";
+
+  const networkName = chainId === 1001 ? "Kaia Kairos" : "Unknown";
+
+  const dummySendTransaction = (to: string, amount: string) => {
+    console.log("Send transaction:", { to, amount });
+  };
+
   return (
     <div className="app">
       <header>
-        <h1>Kaia DApp Demo</h1>
-        <WalletConnect
-          isConnected={isConnected}
-          isConnecting={isConnecting}
-          onConnect={onConnect}
-          onDisconnect={onDisconnect}
-        />
+        <h1>Kaia DApp Demo (Wagmi)</h1>
       </header>
 
+      <main>
+        <appkit-button />
+      </main>
+
       {isConnected && (
-        <main>
-          <WalletInfo
-            account={account}
-            balance={balance}
-            network={network}
-          />
-          <SendForm onSendTransaction={onSendTransaction} />
-          <TransactionList transactions={transactions} />
-        </main>
+        <div className="wallet-content">
+          <div className="wallet-info-section">
+            <WalletInfo
+              account={address || null}
+              balance={formatBalance}
+              network={networkName}
+            />
+          </div>
+          <div className="transaction-section">
+            <SendForm onSendTransaction={dummySendTransaction} />
+            <TransactionList transactions={[]} />
+          </div>
+        </div>
       )}
     </div>
   );

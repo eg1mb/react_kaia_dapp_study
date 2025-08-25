@@ -19,11 +19,11 @@ Kaia 블록체인 네트워크를 위한 데모 dApp입니다. 지갑 연결, �
 
 ## ✨ 기능
 
-- **지갑 연결**: Kaikas 지갑 연결 및 해제
-- **네트워크 자동 추가**: Kaia 테스트넷 자동 추가 기능
-- **잔액 조회**: 연결된 지갑의 KAIA 잔액 실시간 표시
-- **토큰 전송**: 다른 주소로 KAIA 전송
-- **트랜잭션 히스토리**: 전송한 트랜잭션 목록 및 상태 표시
+- **다중 지갑 지원**: Kaikas, MetaMask, WalletConnect 등 다양한 지갑 연결
+- **자동 네트워크 감지**: Kaia Kairos 테스트넷 자동 연결
+- **실시간 잔액 조회**: 연결된 지갑의 KAIA 잔액 실시간 표시
+- **토큰 전송**: 다른 주소로 KAIA 전송 (준비중)
+- **플랫폼 최적화**: PC(QR코드/확장프로그램), 모바일(인앱브라우저) 최적화
 - **반응형 UI**: 모바일 및 데스크톱 환경 지원
 
 ## 🛠 기술 스택
@@ -31,8 +31,8 @@ Kaia 블록체인 네트워크를 위한 데모 dApp입니다. 지갑 연결, �
 - **Frontend**: React 19, TypeScript
 - **Build Tool**: Vite
 - **Styling**: CSS
-- **State Management**: Zustand
-- **Web3**: @kaiachain/web3js-ext 2.0.8, Web3.js 4.16.0
+- **State Management**: Wagmi (React Hooks for Ethereum)
+- **Web3**: Reown AppKit (이전 WalletConnect), Wagmi v2
 - **Router**: React Router 7
 - **Linting**: ESLint
 
@@ -68,12 +68,15 @@ src/
 - yarn 또는 npm
 - [Kaia Wallet](https://chromewebstore.google.com/detail/kaia-wallet/jblndlipeogpafnldhgmapagcccfchpi) 설치
 
-### 2. 설치 및 실행
+### 2. 환경 설정
 
 ```bash
 # 저장소 클론 (이미 있는 경우 생략)
 git clone <repository-url>
 cd kaia-dapp
+
+# 환경 변수 설정
+echo "VITE_PROJECT_ID=your-reown-project-id" > .env.local
 
 # 의존성 설치
 yarn install
@@ -81,6 +84,11 @@ yarn install
 # 개발 서버 시작
 yarn dev
 ```
+
+**PROJECT_ID 받기:**
+1. https://dashboard.reown.com 접속
+2. 새 프로젝트 생성
+3. PROJECT_ID 복사 후 .env.local에 설정
 
 ### 3. 빌드
 
