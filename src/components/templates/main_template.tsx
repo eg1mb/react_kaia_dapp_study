@@ -40,14 +40,14 @@ export default function MainTemplate({
       </header>
 
       {isConnected && (
-        <main>
-          <WalletInfo
-            account={account}
-            balance={balance}
-            network={network}
-          />
-          <SendForm onSendTransaction={onSendTransaction} />
-          <TransactionList transactions={transactions} />
+        <main className="wallet-content">
+          <div className="wallet-info-section">
+            <WalletInfo account={account} balance={balance} network={network} />
+          </div>
+          <div className="transaction-section">
+            <SendForm onSendTransaction={onSendTransaction} />
+            <TransactionList transactions={transactions} />
+          </div>
         </main>
       )}
     </div>
