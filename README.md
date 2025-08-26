@@ -211,6 +211,162 @@ yarn preview
 
 ---
 
+---
+
+## 🚀 NFT 결제 모듈 구현 가이드
+
+### 개요
+
+PaymentMockSystem을 참고하여 Kaia 네트워크용 NFT 결제 모듈을 구현하는 가이드입니다. React Query를 사용한 API 상태 관리와 기존 Web3 유틸리티를 활용합니다.
+
+### 필요 의존성
+
+```bash
+# React Query
+yarn add @tanstack/react-query
+
+# Socket.IO 클라이언트 (실시간 결제 상태 업데이트용)
+yarn add socket.io-client
+
+# 유틸리티 라이브러리
+yarn add lucide-react  # 아이콘
+```
+
+### 구현 단계
+
+#### 1. 프로젝트 구조 확장
+
+```
+src/
+├── components/
+│   ├── organisms/
+│   │   └── nft-payment/        # 새로 추가
+│   │       ├── PaymentFlow.tsx
+│   │       ├── PaymentStep.tsx
+│   │       ├── ProgressBar.tsx
+│   │       └── ResultDisplay.tsx
+├── hooks/                      # 새로 추가
+│   ├── usePaymentFlow.ts
+│   ├── useSocketConnection.ts
+│   └── useNFTPayment.ts
+├── services/                   # 새로 추가
+│   ├── nft-payment/
+│   │   ├── api.ts
+│   │   └── socket.ts
+│   └── react-query/
+│       ├── client.ts
+│       └── keys.ts
+├── store/
+│   └── payment.ts              # 새로 추가
+└── types/
+    └── payment.ts              # 새로 추가
+```
+
+#### 2. 핵심 타입 정의
+
+```typescript
+// src/types/payment.ts
+export type PaymentStep = 'prepare' | 'apply' | 'process' | 'result';
+
+export interface NFTData {
+  tokenId: string;
+  collection: string;
+  price: string;
+  gasEstimate: string;
+  contractAddress: string;
+}
+
+export interface PaymentSession {
+  orderProcessId: string;
+  orderSheetId: string;
+  sessionToken: string;
+  socketUrl: string;
+  nftData: NFTData;
+  walletAddress?: string;
+  transactionHash?: string;
+  status?: 'pending' | 'success' | 'failed';
+}
+```
+
+#### 3. React Query 설정
+
+```typescript
+// src/services/react-query/client.ts
+import { QueryClient } from '@tanstack/react-query';
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+      retry: 3,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+```
+
+#### 4. 결제 플로우 훅
+
+```typescript
+// src/hooks/usePaymentFlow.ts
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+
+export const usePaymentFlow = () => {
+  const [currentStep, setCurrentStep] = useState<PaymentStep>('prepare');
+  const [sessionData, setSessionData] = useState<PaymentSession | null>(null);
+
+  const prepareMutation = useMutation({
+    mutationFn: (nftData: NFTData) => paymentAPI.createPaymentSession(nftData),
+    onSuccess: (data) => {
+      setSessionData(data);
+      setCurrentStep('apply');
+    },
+  });
+
+  // 나머지 단계들...
+
+  return {
+    currentStep,
+    sessionData,
+    prepareMutation,
+    // ...
+  };
+};
+```
+
+### Web3 통합
+
+기존 `src/utils/web3/` 유틸리티들을 활용하여 NFT 트랜잭션 처리:
+
+```typescript
+// src/utils/web3/nft_payment.ts
+export class NFTPaymentService {
+  async prepareNFTTransaction(contractAddress: string, tokenId: string): Promise<TransactionData> {
+    // ERC-721 transferFrom 함수 데이터 인코딩
+    // 가스 추정
+    // 트랜잭션 데이터 구성
+  }
+
+  async sendNFTWithFeeDelegation(transactionData: TransactionData): Promise<string> {
+    // Kaia 특화 Fee Delegation 사용
+  }
+}
+```
+
+### 향후 확장 계획
+
+- **NFT 메타데이터 API 연동**
+- **Socket.IO를 통한 실시간 상태 업데이트**
+- **Fee Delegation 구현** (Kaia 네트워크 특화)
+- **에러 처리 및 재시도 로직**
+- **테스트 작성**
+
+이 가이드를 따라 단계별로 구현하면 현재 프로젝트에 NFT 결제 모듈을 성공적으로 통합할 수 있습니다.
+
+---
+
 ## 📄 라이선스
 
 이 프로젝트는 학습 및 데모 목적으로 제작되었습니다.
