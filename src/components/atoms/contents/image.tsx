@@ -4,6 +4,7 @@ interface ImageProps {
   alt: string;
   width?: number;
   height?: number;
+  loading?: 'lazy' | 'eager';
 }
 
 export default function Image({
@@ -12,6 +13,7 @@ export default function Image({
   alt,
   width,
   height,
+  loading = 'lazy',
 }: ImageProps) {
   return (
     <img
@@ -20,6 +22,7 @@ export default function Image({
       alt={alt}
       width={width}
       height={height}
+      loading={loading}
     />
   );
 }

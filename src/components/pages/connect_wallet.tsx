@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { useConnectionStore } from "@/store/connection";
-import { useTransactionStore } from "@/store/transaction";
+import { useWallet } from "@/hooks/useWallet";
+import { useTransaction } from "@/hooks/useTransaction";
 import WalletTemplate from "@/components/templates/wallet_template";
 
-export default function Home() {
+export default function ConnetWallet() {
   const {
     isConnected,
     isConnecting,
@@ -14,9 +14,9 @@ export default function Home() {
     connectWallet,
     disconnect,
     addKaiaTestnet,
-  } = useConnectionStore();
+  } = useWallet();
 
-  const { transactions, sendTransaction } = useTransactionStore();
+  const { transactions, sendTransaction } = useTransaction();
 
   useEffect(() => {
     if (walletType) {
@@ -25,7 +25,7 @@ export default function Home() {
         connectWallet();
       });
     }
-  }, [walletType, addKaiaTestnet, connectWallet]);
+  }, [walletType]); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

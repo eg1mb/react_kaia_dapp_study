@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-interface HyperlinkRouteProps {
+interface RouteLinkProps {
   className: string;
   head?: string;
   text: string;
@@ -8,15 +8,15 @@ interface HyperlinkRouteProps {
   to: string;
 }
 
-export default function HyperlinkRoute({
+export default function RouteLink({
   className,
   head,
   text,
   tail,
   to,
-}: HyperlinkRouteProps) {
+}: RouteLinkProps) {
   return (
-    <Link className={`hyperlinkRoute ${className}`} to={to}>
+    <Link className={`RouteLink ${className}`} to={to}>
       <span className="container">
         {head && <span>{head}</span>}
         <span>{text}</span>
