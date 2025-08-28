@@ -1,17 +1,17 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { ConnectionStore } from '../types/connection_store';
-import { detectWallet } from '../utils/web3/detect_wallet';
-import { requestAccounts } from '../utils/web3/request_accounts';
-import { getBalance } from '../utils/web3/get_balance';
-import { getNetwork } from '../utils/web3/get_network';
-import { addKaiaTestnet } from '../utils/web3/add_network';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { ConnectionStore } from "../types/connection_store";
+import { detectWallet } from "../utils/web3/detect_wallet";
+import { requestAccounts } from "../utils/web3/request_accounts";
+import { getBalance } from "../utils/web3/get_balance";
+import { getNetwork } from "../utils/web3/get_network";
+import { addKaiaTestnet } from "../utils/web3/add_network";
 
 export const useWallet = (): ConnectionStore => {
   const queryClient = useQueryClient();
 
   // 지갑 상태 조회 (로딩 상태 제외)
   const walletQuery = useQuery({
-    queryKey: ['wallet'],
+    queryKey: ["wallet"],
     queryFn: () => ({
       isConnected: false,
       account: null,
@@ -42,11 +42,16 @@ export const useWallet = (): ConnectionStore => {
         walletType,
       };
     },
+    onMutate: () => {
+      console.log("🔄 지갑 연결 시작...");
+    },
     onSuccess: (data) => {
-      queryClient.setQueryData(['wallet'], data);
+      console.log("✅ 지갑 연결 성공");
+      queryClient.setQueryData(["wallet"], data);
     },
     onError: (error) => {
-      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error occurred";
       console.error("Wallet connection failed: ", error);
       alert(errorMessage);
     },
@@ -61,7 +66,8 @@ export const useWallet = (): ConnectionStore => {
       alert("카이아 테스트넷이 추가되었습니다!");
     },
     onError: (error) => {
-      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error occurred";
       console.error("Network addition failed: ", error);
       alert("네트워크 추가에 실패했습니다: " + errorMessage);
     },
@@ -77,7 +83,7 @@ export const useWallet = (): ConnectionStore => {
   };
 
   const disconnect = (): void => {
-    queryClient.setQueryData(['wallet'], {
+    queryClient.setQueryData(["wallet"], {
       isConnected: false,
       account: null,
       balance: "0",
@@ -95,11 +101,11 @@ export const useWallet = (): ConnectionStore => {
     network: walletQuery.data?.network || null,
     web3: walletQuery.data?.web3 || null,
     walletType: walletQuery.data?.walletType || null,
-    
+
     // 로딩 상태 (React Query에서 관리)
     isConnecting: connectWalletMutation.isPending,
     isAddingNetwork: addNetworkMutation.isPending,
-    
+
     // 액션
     connectWallet,
     addKaiaTestnet: addKaiaTestnetAction,
