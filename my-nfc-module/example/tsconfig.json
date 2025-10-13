@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "my-nfc-module": ["../src/index"],
+      "my-nfc-module/*": ["../src/*"]
+    }
+  }
+}
