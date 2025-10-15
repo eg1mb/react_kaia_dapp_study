@@ -49,14 +49,11 @@ src/
 │   ├── molecule/        # 복합 컴포넌트
 │   ├── organisms/       # 기능 단위 컴포넌트
 │   └── templates/       # 페이지 템플릿
-├── store/               # Zustand 상태 관리
-│   ├── connection.ts    # 지갑 연결 상태
-│   ├── transaction.ts   # 트랜잭션 상태
+├── store/               # 상태 관리
 │   └── error.ts         # 에러 상태
-├── utils/               # 유틸리티 함수
-│   └── web3/           # Web3 관련 유틸리티
 ├── types/               # TypeScript 타입 정의
 ├── configs/             # 설정 파일
+│   └── wagmi_config.ts  # Wagmi 및 AppKit 설정
 └── App.tsx             # 메인 앱 컴포넌트
 ```
 
@@ -128,42 +125,35 @@ yarn preview
 
 ### 상태 관리
 
-**Connection Store** (`src/store/connection.ts`)
+**Wagmi Hooks**
 
-- 지갑 연결 상태
-- 계정 정보 및 잔액
-- 네트워크 정보
-
-**Transaction Store** (`src/store/transaction.ts`)
-
-- 트랜잭션 히스토리
-- 전송 기능
+- `useAccount`: 지갑 연결 상태 및 계정 정보
+- `useBalance`: 잔액 실시간 조회
+- `useChainId`: 네트워크 정보
+- `useDisconnect`: 지갑 연결 해제
 
 **Error Store** (`src/store/error.ts`)
 
-- 전역 에러 상태 관리
+- 전역 에러 상태 관리 (Zustand)
 
-### Web3 유틸리티
+### Wagmi 설정
 
-**지갑 관련**
+**Wagmi Config** (`src/configs/wagmi_config.ts`)
 
-- `detect_wallet.ts`: 지갑 감지
-- `request_accounts.ts`: 계정 요청
-- `add_network.ts`: 네트워크 추가
-
-**블록체인 상호작용**
-
-- `get_balance.ts`: 잔액 조회
-- `get_network.ts`: 네트워크 정보
-- `send_transaction.ts`: 트랜잭션 전송
+- Reown AppKit 어댑터 설정
+- Kaikas 커스텀 커넥터 설정
+- Kaia Kairos 네트워크 설정
+- WalletConnect 프로젝트 ID 연동
 
 ### 테스트 방법
 
-1. **Kaikas 지갑 설치**
-2. **테스트넷 연결**: 앱에서 자동으로 Kaia 테스트넷 추가
-3. **테스트 토큰**: [Kaia Faucet](https://faucet.kaia.io/)에서 받기
-4. **트랜잭션 테스트**: 다른 주소로 토큰 전송
-5. **확인**: [KaiaScan](https://www.kaiascan.io/)에서 트랜잭션 확인
+1. **지갑 설치**: Kaikas, MetaMask 등
+2. **지갑 연결**:
+   - PC: QR코드 또는 확장프로그램으로 연결
+   - 모바일: 인앱 브라우저에서 직접 연결
+3. **네트워크 자동 전환**: Kaia Kairos 테스트넷으로 자동 전환
+4. **테스트 토큰**: [Kaia Faucet](https://faucet.kaia.io/)에서 받기
+5. **확인**: [KaiaScan](https://www.kaiascan.io/)에서 잔액 및 트랜잭션 확인
 
 ---
 
@@ -209,7 +199,8 @@ yarn preview
 
 - [Kaia 공식 문서](https://docs.kaia.io/)
 - [Kaia Wallet 가이드](https://docs.kaia.io/build/tools/wallets/kaia-wallet/)
-- [Web3.js 문서](https://web3js.readthedocs.io/)
+- [Wagmi 문서](https://wagmi.sh/)
+- [Reown AppKit 문서](https://docs.reown.com/appkit/overview)
 
 ### 도구
 
